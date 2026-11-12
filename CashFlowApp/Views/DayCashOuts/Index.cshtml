@@ -1,0 +1,147 @@
+﻿@model PaginatedList<CashFlowApp.Models.DayCashOut>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h3>@ViewBag.delta  المصروفات اليومية</h3>
+
+<p>
+    <div class="row">
+@*        <a asp-action="Create">Create New</a>*@
+        <form asp-action="Index" method="get" class="form-inline ml-3">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group mr-2">
+                <a class="btn btn-primary "  asp-action="Create">Create New</a>
+            </div>
+            <div class="form-group mr-2">
+                <label class="control-label">year </label>
+                <select name="year" value="@ViewData["sYear"]" class="form-control" asp-items="ViewBag.Year"></select>
+            </div>
+            <div class="form-group mx-sm-3 mr-2">
+                <label  class="control-label">month </label>
+                <select name="month" value="@ViewData["sMonth"]" class="form-control" asp-items="ViewBag.Month"></select>
+            </div>
+            <div class="form-group mr-2">
+                <input type="submit" value="Filter" class="btn btn-primary" />
+            </div>
+        </form>
+@*        <form method="GET">
+            <div class="form-group">
+                //Returns filter1
+                <select asp-items="@ViewData["Year"] as List<SelectListItem>" class="form-control" name="year">
+                    <option value="">-- Select Difficulty --</option>
+                </select>
+                //Returns filter2
+                <select asp-items="@ViewData["Month"] as List<SelectListItem>" class="form-control" name="month">
+                    <option value="">-- Select Type --</option>
+                </select>
+                <a  asp-action="Index" asp-route-year="" asp-route-month="" class="btn btn-default">Filter</a>
+            </div>
+        </form>*@
+        <form asp-action="Index" method="get">
+@*            <div class="form-actions no-color">
+                <p>
+                    Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+                    <input type="submit" value="Search" class="btn btn-default" /> |
+                    <a asp-action="Index">Back to Full List</a>
+                </p>
+            </div>*@
+            <div class="form-inline mb-0">
+                Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+                <input type="submit" value="Search" class="btn btn-default" /> |
+                <a asp-action="Index">Back to Full List</a>
+            </div>
+        </form>
+    </div>
+</p>
+<table class="table table-sm table-striped">
+    <thead>
+        <tr>
+            <th>
+@*                @Html.DisplayNameFor(model => model.Amount)*@
+@*                @Html.DisplayNameFor(x => x.GetEnumerator().Current.Amount)*@
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Amount)
+            </th>
+            <th>
+@*                @Html.DisplayNameFor(model => model.Category)*@
+            </th>
+            <th>
+@*                @Html.DisplayNameFor(model => model.Description)*@
+            </th>
+            <th>
+@*                @Html.DisplayNameFor(model => model.EntryDate)*@
+            </th>
+            <th>
+@*                @Html.DisplayNameFor(model => model.Month)*@
+            </th>
+            <th>
+@*                @Html.DisplayNameFor(model => model.Year)*@
+            </th>
+            <th>
+@*                @Html.DisplayNameFor(model => model.AddedBy)*@
+            </th>
+@*            <th>
+                @Html.DisplayNameFor(model => model.Project)
+            </th>*@
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EntryDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Month)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AddedBy)
+            </td>
+@*                <td>
+                    @Html.DisplayFor(modelItem => item.Project.Name)
+                </td>*@
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.DcashOutId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.DcashOutId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.DcashOutId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

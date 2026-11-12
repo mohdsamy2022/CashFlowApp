@@ -1,0 +1,227 @@
+﻿@model CashFlowApp.Models.ReportViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+
+<h1>Index</h1>
+
+<p>
+    <div class="row">
+@*        <div class="col-md-4">*@
+            <form asp-action="ViewReport" class="form-inline">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group mb-2">
+                <label asp-for="MCashout.Year" class="control-label"></label>
+                <select asp-for="MCashout.Year" class="form-control" asp-items="ViewBag.Year"></select>
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                <label asp-for="MCashout.ProjectId" class="control-label"></label>
+                <select asp-for="MCashout.ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
+                </div>
+                <div class="form-group mb-2">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+@*        </div>*@
+    </div>
+
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MCashout.Jan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MCashout.Fab)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MCashout.March)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MCashout.April)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MCashout.May)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MCashout.June)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MCashout.July)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MCashout.August)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MCashout.Sep)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MCashout.Oct)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MCashout.Nov)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MCashout.Dec)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MCashout.Year)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MCashout.Project)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                <td>
+                @Html.DisplayFor(model => model.MCashout.Jan)
+                </td>
+                <td>
+                @Html.DisplayFor(model => model.MCashout.Fab)
+                </td>
+                <td>
+                @Html.DisplayFor(model => model.MCashout.March)
+                </td>
+                <td>
+                @Html.DisplayFor(model => model.MCashout.April)
+                </td>
+                <td>
+                @Html.DisplayFor(model => model.MCashout.May)
+                </td>
+                <td>
+                @Html.DisplayFor(model => model.MCashout.June)
+                </td>
+                <td>
+                @Html.DisplayFor(model => model.MCashout.July)
+                </td>
+                <td>
+                @Html.DisplayFor(model => model.MCashout.August)
+                </td>
+                <td>
+                @Html.DisplayFor(model => model.MCashout.Sep)
+                </td>
+                <td>
+                @Html.DisplayFor(model => model.MCashout.Oct)
+                </td>
+                <td>
+                @Html.DisplayFor(model => model.MCashout.Nov)
+                </td>
+                <td>
+                @Html.DisplayFor(model => model.MCashout.Dec)
+                </td>
+                <td>
+                @Html.DisplayFor(model => model.MCashout.Year)
+                </td>
+                <td>
+                @Html.DisplayFor(model => model.MCashout.Project.Name)
+                </td>
+                <td>
+@*                    <a asp-action="Edit" asp-route-id="@item.McashOutId">Edit</a> |
+                    <a asp-action="Bar" asp-controller="BarChart" asp-route-id="@item.McashOutId">BarChart</a> |
+                    <a asp-action="Delete" asp-route-id="@item.McashOutId">Delete</a>*@
+                </td>
+            </tr>
+    </tbody>
+</table>
+
+@if(Model != null)
+{
+    
+    var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.SimpleReport.Select(x => x.DimensionOne).ToList());
+    var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.SimpleReport.Select(x => x.Quantity).ToList());
+    ViewData["Title"] = "Bar Chart";
+
+    <div class="box-body">
+
+        <div class="chart-container">
+            <canvas id="chart" style="width:100%; height:500px"></canvas>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            var chartName = "chart";
+            var ctx = document.getElementById(chartName).getContext('2d');
+            var data = {
+                labels: @Html.Raw(XLabels),
+                datasets: [{
+                    label: "Departments Chart",
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 0, 0)',
+                        'rgba(0, 255, 0)',
+                        'rgba(0, 0, 255)',
+                        'rgba(192, 192, 192)',
+                        'rgba(255, 255, 0)',
+                        'rgba(255, 0, 255)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 0, 0)',
+                        'rgba(0, 255, 0)',
+                        'rgba(0, 0, 255)',
+                        'rgba(192, 192, 192)',
+                        'rgba(255, 255, 0)',
+                        'rgba(255, 0, 255)'
+                    ],
+                    borderWidth: 1,
+                    data: @Html.Raw(YValues)
+                }]
+            };
+
+            var options = {
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            min: 0,
+                            beginAtZero: true
+                        },
+                        gridLines: {
+                            display: true,
+                            color: "rgba(255,99,164,0.2)"
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            min: 0,
+                            beginAtZero: true
+                        },
+                        gridLines: {
+                            display: false
+                        }
+                    }]
+                }
+            };
+
+            var myChart = new Chart(ctx, {
+                options: options,
+                data: data,
+                type: 'bar'
+
+            });
+        });
+    </script>
+}
+
+
+
